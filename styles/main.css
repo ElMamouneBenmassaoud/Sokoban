@@ -13,6 +13,29 @@ body {
     position: absolute;
 }
 
+header {
+    grid-area: header;
+    text-align: center;
+}
+main {
+    grid-area: main;
+    box-shadow:0px -25px 50px -5px darkblue;
+    background-color: white;
+}
+
+footer {
+    grid-area: footer;
+    margin: 0;
+    color: white;
+    background-color: darkblue;
+    text-align: center;
+    margin-top: auto !important; 
+}
+
+.line {
+    display: flex;
+}
+
 .square {
     width: 30px;
     height: 30px;
@@ -40,23 +63,4 @@ body {
 
 .floor {
     background-color: blue;
-}
-
-header {
-    grid-area: header;
-    text-align: center;
-}
-main {
-    grid-area: main;
-    box-shadow:0px -25px 50px -5px darkblue;
-    background-color: white;
-}
-
-footer {
-    grid-area: footer;
-    margin: 0;
-    color: white;
-    background-color: darkblue;
-    text-align: center;
-    margin-top: auto !important; 
 }
