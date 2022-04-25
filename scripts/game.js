@@ -13,10 +13,10 @@ window.addEventListener("load", function(event) {
 */
 function buildLevel(level) {
     // Loop over all lines of the level map
-    for (let i=0; i<levels[level].map.length; i++) {
-        let line = levels[level].map[i];
+    for (let i = 0; i < levels[level].map.length; i++) {
+        const line = levels[level].map[i];
         // Creates the div representing a line
-        let lineDiv = document.createElement("div");
+        const lineDiv = document.createElement("div");
         // Adds the class "line" to the line div
         $(lineDiv).addClass("line");
         // Appends the line div to the #world div
@@ -24,28 +24,28 @@ function buildLevel(level) {
         // Loop over all the symbols in the line
         for (const symbol of line) {
             // Creates the div representing a square
-            let squareDiv = document.createElement("div");
+            const squareDiv = document.createElement("div");
             // Adds the "square" class to the square div
             $(squareDiv).addClass("square");
 
             // Adds the correct class depending on the symbol
             switch (symbol) {
-                case ' ': 
+            case " ":
                 $(squareDiv).addClass("floor");
                 break;
-                case 'x': 
+            case "x":
                 $(squareDiv).addClass("target");
                 break;
-                case '🧍': 
+            case "🧍":
                 $(squareDiv).addClass("player");
                 break;
-                case '#': 
+            case "#":
                 $(squareDiv).addClass("box");
                 break;
-                case '@': 
+            case "@":
                 $(squareDiv).addClass("boxOnTarget");
                 break;
-                default: 
+            default:
                 $(squareDiv).addClass("wall");
                 break;
             }
@@ -54,5 +54,4 @@ function buildLevel(level) {
             lineDiv.append(squareDiv);
         }
     }
-    
 }
