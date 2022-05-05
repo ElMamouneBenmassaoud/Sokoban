@@ -33,6 +33,7 @@ footer {
 }
 
 .line {
+    justify-content: center;
     display: flex;
 }
 
@@ -41,13 +42,14 @@ footer {
     height: 30px;
 }
 
+.floor {
+    background-color: blue;
+}
+
 .target {
     background-color: lime;
 }
 
-.player {
-    background-color: magenta;
-}
 
 .box {
     background-color: yellow;
@@ -61,6 +63,6 @@ footer {
     background-color: grey;
 }
 
-.floor {
-    background-color: blue;
+.player {
+    background-color: magenta;
 }
