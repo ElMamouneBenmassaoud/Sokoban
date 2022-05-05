@@ -128,7 +128,7 @@ function move(events) {
 }
 
 /**
- * deplacement de l'ancienne position a la nouvelle position
+ * Deplacement de l'ancienne position a la nouvelle position.
  * @param {Number} oldX l'ancienne position (x)
  * @param {Number} oldY l'ancienne position (y)
  * @param {Number} newX la nouvelle position (x)
@@ -144,8 +144,11 @@ function deplacement(oldX, oldY, newX, newY) {
         x: newX,
         y: newY,
     });
-    $(oldPos).removeClass("player")
-        .addClass("floor");
 
-    $(newPos).addClass("player");
+    if (!$(newPos).hasClass("wall")) {
+        $(oldPos).removeClass("player")
+            .addClass("floor");
+
+        $(newPos).addClass("player");
+    }
 }
