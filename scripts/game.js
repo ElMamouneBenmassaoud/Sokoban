@@ -3,8 +3,8 @@
 /**
  * Calls the function buildLevel once the page is loaded
  */
-window.addEventListener("load", function(event) {
-    buildLevel(0);
+window.addEventListener("load", function (event) {
+    buildLevel(3);
     window.addEventListener("keydown", function (events) {
         move(events);
     });
@@ -65,7 +65,7 @@ const pos = {
 };
 
 /**
- * La position du joueur
+ * Renvoie la position du joueur
  * @returns la position du joueur
  */
 function getPlayerPosition() {
@@ -75,22 +75,22 @@ function getPlayerPosition() {
     return pos;
 }
 /**
- * Renvoie la case la case de la page web qui se trouve à
+ * Renvoie la case de la page web qui se trouve à
  * la position donnée en argument
  * @param {pos} position position du joueur.
- * @returns la case la case de la page web qui se trouve à
+ * @returns la case de la page web qui se trouve à
  * la position donnée en argument
  */
 function getSquareAt(position) {
     return $("#world").children() //l'enfant de l'ID world
-        .eq(position.y) //la valeur de la ligne (x) qui se trouve dans pos
+        .eq(position.y) //la valeur de la ligne (y) qui se trouve dans pos
         .children() //l'enfant de de l'enfant de l'ID world
-        .eq(position.x); //la valeur de la colonne (y) qui se trouve dans pos
+        .eq(position.x); //la valeur de la colonne (x) qui se trouve dans pos
 }
 
 /**
- * Déplacement du joueur
- * @param {KeyboardEvent} events la touche pour le déplacer
+ * Déplacement du joueur en utilisants les touches directionelles
+ * @param {KeyboardEvent} events la touche pour déplacer le joueur
  * @returns
  */
 function move(events) {
@@ -99,30 +99,40 @@ function move(events) {
     let newY = 0;
     const oldX = currentPosPlayer.x;
     const oldY = currentPosPlayer.y;
+    let nextToPlayerX = 0;
+    let nextToPlayerY = 0;
     switch (events.key) {
     case "ArrowDown":
         console.log("down");
-        newY = ++currentPosPlayer.y;
         newX = currentPosPlayer.x;
-        deplacement(oldX, oldY, newX, newY);
+        newY = currentPosPlayer.y + 1;
+        nextToPlayerX = currentPosPlayer.x;
+        nextToPlayerY = currentPosPlayer.y + 2;
+        deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY);
         break;
     case "ArrowUp":
         console.log("up");
-        newY = --currentPosPlayer.y;
         newX = currentPosPlayer.x;
-        deplacement(oldX, oldY, newX, newY);
+        newY = currentPosPlayer.y - 1;
+        nextToPlayerX = currentPosPlayer.x;
+        nextToPlayerY = currentPosPlayer.y - 2;
+        deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY);
         break;
     case "ArrowRight":
         console.log("right");
-        newX = ++currentPosPlayer.x;
+        newX = currentPosPlayer.x + 1;
         newY = currentPosPlayer.y;
-        deplacement(oldX, oldY, newX, newY);
+        nextToPlayerX = currentPosPlayer.x + 2;
+        nextToPlayerY = currentPosPlayer.y;
+        deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY);
         break;
     case "ArrowLeft":
         console.log("left");
-        newX = --currentPosPlayer.x;
+        newX = currentPosPlayer.x - 1;
         newY = currentPosPlayer.y;
-        deplacement(oldX, oldY, newX, newY);
+        nextToPlayerX = currentPosPlayer.x - 2;
+        nextToPlayerY = currentPosPlayer.y;
+        deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY);
         break;
     }
 }
@@ -133,8 +143,10 @@ function move(events) {
  * @param {Number} oldY l'ancienne position (y)
  * @param {Number} newX la nouvelle position (x)
  * @param {Number} newY la nouvelle position (y)
+ * @param {number} nextToPlayerX
+ * @param {number} nextToPlayerY
  */
-function deplacement(oldX, oldY, newX, newY) {
+function deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY) {
     const oldPos = getSquareAt({
         x: oldX,
         y: oldY,
@@ -145,10 +157,37 @@ function deplacement(oldX, oldY, newX, newY) {
         y: newY,
     });
 
-    if (!$(newPos).hasClass("wall")) {
-        $(oldPos).removeClass("player")
-            .addClass("floor");
+    const nextToPlayer = getSquareAt({
+        x: nextToPlayerX,
+        y: nextToPlayerY,
+    });
 
-        $(newPos).addClass("player");
+    if (!$(newPos).hasClass("wall")) {
+        if (!(($(newPos).hasClass("box") || $(newPos).hasClass("boxOnTarget")) && ($(nextToPlayer).hasClass("box") || $(nextToPlayer).hasClass("boxOnTarget") || $(nextToPlayer).hasClass("wall")))) {
+            $(oldPos).removeClass("player");
+
+            if (!$(oldPos).hasClass("target")) {
+                $(oldPos).addClass("floor");
+            }
+
+            $(newPos).addClass("player");
+            $(newPos).removeClass("floor");
+
+            if ($(newPos).hasClass("box") || $(newPos).hasClass("boxOnTarget")) {
+                $(newPos).removeClass("box");
+
+                if ($(newPos).hasClass("boxOnTarget")) {
+                    $(newPos).addClass("target");
+                }
+
+                $(newPos).removeClass("boxOnTarget");
+
+                if ($(nextToPlayer).hasClass("target")) {
+                    $(nextToPlayer).addClass("boxOnTarget");
+                } else {
+                    $(nextToPlayer).addClass("box");
+                }
+            }
+        }
     }
 }

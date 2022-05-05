@@ -42,14 +42,13 @@ footer {
     height: 30px;
 }
 
-.floor {
-    background-color: blue;
-}
-
 .target {
     background-color: lime;
 }
 
+.floor {
+    background-color: blue;
+}
 
 .box {
     background-color: yellow;
@@ -64,5 +63,5 @@ footer {
 }
 
 .player {
-    background-color: magenta;
+    background-color: magenta !important;
 }
