@@ -65,3 +65,14 @@ footer {
 .player {
     background-color: magenta !important;
 }
+
+#cptBlock {
+    border: 2px solid;
+    display: flex;
+    background-color: yellow;
+    margin-bottom: 8px;
+}
+
+#cpt {
+    color: red;
+}

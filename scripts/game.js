@@ -103,7 +103,6 @@ function move(events) {
     let nextToPlayerY = 0;
     switch (events.key) {
     case "ArrowDown":
-        console.log("down");
         newX = currentPosPlayer.x;
         newY = currentPosPlayer.y + 1;
         nextToPlayerX = currentPosPlayer.x;
@@ -111,7 +110,6 @@ function move(events) {
         deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY);
         break;
     case "ArrowUp":
-        console.log("up");
         newX = currentPosPlayer.x;
         newY = currentPosPlayer.y - 1;
         nextToPlayerX = currentPosPlayer.x;
@@ -119,7 +117,6 @@ function move(events) {
         deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY);
         break;
     case "ArrowRight":
-        console.log("right");
         newX = currentPosPlayer.x + 1;
         newY = currentPosPlayer.y;
         nextToPlayerX = currentPosPlayer.x + 2;
@@ -127,7 +124,6 @@ function move(events) {
         deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY);
         break;
     case "ArrowLeft":
-        console.log("left");
         newX = currentPosPlayer.x - 1;
         newY = currentPosPlayer.y;
         nextToPlayerX = currentPosPlayer.x - 2;
@@ -143,8 +139,8 @@ function move(events) {
  * @param {Number} oldY l'ancienne position (y)
  * @param {Number} newX la nouvelle position (x)
  * @param {Number} newY la nouvelle position (y)
- * @param {number} nextToPlayerX
- * @param {number} nextToPlayerY
+ * @param {number} nextToPlayerX la position qui suit la nouvelle position (x)
+ * @param {number} nextToPlayerY la position qui suit la nouvelle position (y)
  */
 function deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY) {
     const oldPos = getSquareAt({
@@ -188,6 +184,17 @@ function deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY) {
                     $(nextToPlayer).addClass("box");
                 }
             }
+
+            incrMoves();
         }
     }
+}
+
+let moves = 0;
+
+/**
+ * Incrémente le nombre de mouvements et l'affiche sur la page web
+ */
+function incrMoves() {
+    $("#cpt").text(++moves);
 }
