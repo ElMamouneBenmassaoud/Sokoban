@@ -76,3 +76,20 @@ footer {
 #cpt {
     color: red;
 }
+
+#levelBlock {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    color: red;
+    font-weight: bold;
+    font-size: xx-large;
+}
+
+#msg {
+    margin-bottom: 16px;
+    color: black;
+    font-size: medium;
+    text-align: center;
+}

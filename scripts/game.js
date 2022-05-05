@@ -1,12 +1,15 @@
 "use strict";
 
+let currentLevel = 0;
+
 /**
- * Calls the function buildLevel once the page is loaded
+ * Calls the function buildLevel once the page is loaded and listens to key press
  */
 window.addEventListener("load", function (event) {
-    buildLevel(3);
+    initLevel(currentLevel);
     window.addEventListener("keydown", function (events) {
         move(events);
+        finishLevel(events);
     });
 });
 
@@ -15,6 +18,9 @@ window.addEventListener("load", function (event) {
 * @param {number} level The level's number
 */
 function buildLevel(level) {
+    // Clears the world map
+    $("#world").empty();
+
     // Loop over all lines of the level map
     for (let i = 0; i < levels[level].map.length; i++) {
         const line = levels[level].map[i];
@@ -91,7 +97,6 @@ function getSquareAt(position) {
 /**
  * Déplacement du joueur en utilisants les touches directionelles
  * @param {KeyboardEvent} events la touche pour déplacer le joueur
- * @returns
  */
 function move(events) {
     const currentPosPlayer = getPlayerPosition();
@@ -158,7 +163,7 @@ function deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY) {
         y: nextToPlayerY,
     });
 
-    if (!$(newPos).hasClass("wall")) {
+    if (!$(newPos).hasClass("wall") && !allOnTarget()) {
         if (!(($(newPos).hasClass("box") || $(newPos).hasClass("boxOnTarget")) && ($(nextToPlayer).hasClass("box") || $(nextToPlayer).hasClass("boxOnTarget") || $(nextToPlayer).hasClass("wall")))) {
             $(oldPos).removeClass("player");
 
@@ -186,6 +191,10 @@ function deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY) {
             }
 
             incrMoves();
+
+            if (allOnTarget()) {
+                $("#msg").text("Bien joué ! Appuyez sur la touche ESPACE pour passer au niveau suivant !");
+            }
         }
     }
 }
@@ -197,4 +206,40 @@ let moves = 0;
  */
 function incrMoves() {
     $("#cpt").text(++moves);
+}
+
+/**
+ * Renvoie true si toutes les boites sont sur leurs cibles, false sinon
+ * @returns true si toutes les boites sont sur leurs cibles, false sinon
+ */
+function allOnTarget() {
+    return $(".boxOnTarget").length === $(".target").length;
+}
+
+/**
+ * Lance le prochain niveau grâce à l'appui de la touche espace
+ * @param {KeyboardEvent} events la touche pour lancer le prochain niveau
+ */
+function finishLevel(events) {
+    switch (events.code) {
+    case "Space":
+        if (allOnTarget()) {
+            initLevel(++currentLevel);
+        }
+        break;
+    }
+}
+
+/**
+ * Initialise le niveau passé en paramètre
+ * @param {Number} level le niveau à initialiser
+ */
+function initLevel(level) {
+    moves = 0;
+    $("#cpt").text(moves);
+
+    $("#level").text(level + 1);
+    buildLevel(level);
+
+    $("#msg").empty();
 }
