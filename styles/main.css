@@ -15,7 +15,12 @@ body {
 
 header {
     grid-area: header;
+    justify-content: center;
+    align-items: center;
+    font-size: xx-large;
+    font-weight: bold;
     text-align: center;
+    display: flex;
 }
 main {
     grid-area: main;
@@ -143,4 +148,22 @@ footer {
     height: 30px;
     margin-left: 16px;
     cursor: pointer;
+}
+
+#help {
+    background-image: url("../assets/help.png");
+    background-size: cover;
+    width: 45px;
+    height: 45px;
+    margin-left: 16px;
+    cursor: pointer;
+}
+
+.modal-body {
+    display: flex;
+}
+
+.help-img {
+    width: 80px;
+    height: 50px;
 }
