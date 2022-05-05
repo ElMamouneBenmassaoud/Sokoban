@@ -224,7 +224,11 @@ function finishLevel(events) {
     switch (events.code) {
     case "Space":
         if (allOnTarget()) {
-            initLevel(++currentLevel);
+            if (currentLevel !== levels.length - 1) {
+                initLevel(++currentLevel);
+            } else {
+                endGame();
+            }
         }
         break;
     }
@@ -242,4 +246,14 @@ function initLevel(level) {
     buildLevel(level);
 
     $("#msg").empty();
+}
+
+/**
+ * Affiche un message de félicitations à la fin du jeu
+ */
+function endGame() {
+    $("#cptBlock").hide();
+    $("#levelBlock").hide();
+
+    $("#msg").text("Félicitations ! Vous avez réussi tous les niveaux !");
 }
