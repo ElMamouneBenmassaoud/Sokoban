@@ -44,22 +44,27 @@ footer {
 
 .target {
     background-color: lime;
+    background: url("../assets/sprites.png") -180px 0px;
 }
 
 .floor {
     background-color: blue;
+    background: url("../assets/sprites.png") -120px 0px;
 }
 
 .box {
     background-color: yellow;
+    background: url("../assets/sprites.png") -150px 0px;
 }
 
 .boxOnTarget {
     background-color: orange;
+    background: url("../assets/sprites.png") -150px -30px;
 }
 
 .wall {
     background-color: grey;
+    background: url("../assets/sprites.png") -120px -30px;
 }
 
 .player {
@@ -92,4 +97,40 @@ footer {
     color: black;
     font-size: medium;
     text-align: center;
+}
+
+.player-front {
+    background: url("../assets/sprites.png") -30px 0px;
+}
+
+.player-front2 {
+    background: url("../assets/sprites.png") -30px -30px;
+}
+
+.player-up {
+    background: url("../assets/sprites.png") -60px 0px;
+}
+
+.player-up2 {
+    background: url("../assets/sprites.png") -60px -30px;
+}
+
+.player-left {
+    background: url("../assets/sprites.png") 0px 0px;
+}
+
+.player-left2 {
+    background: url("../assets/sprites.png") 0px -30px;
+}
+
+.player-right {
+    background: url("../assets/sprites.png") -90px 0px;
+}
+
+.player-right2 {
+    background: url("../assets/sprites.png") -90px -30px;
+}
+
+#world {
+    margin-bottom: 16px;
 }

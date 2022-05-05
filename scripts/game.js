@@ -1,6 +1,10 @@
 "use strict";
 
 let currentLevel = 0;
+// @ts-ignore
+let playerAnimationTimer = null;
+// @ts-ignore
+let boxesAnimationTimer = null;
 
 /**
  * Calls the function buildLevel once the page is loaded and listens to key press
@@ -47,6 +51,7 @@ function buildLevel(level) {
                 break;
             case "🧍":
                 $(squareDiv).addClass("player");
+                $(squareDiv).addClass("player-front");
                 break;
             case "#":
                 $(squareDiv).addClass("box");
@@ -94,6 +99,8 @@ function getSquareAt(position) {
         .eq(position.x); //la valeur de la colonne (x) qui se trouve dans pos
 }
 
+let direction = "";
+
 /**
  * Déplacement du joueur en utilisants les touches directionelles
  * @param {KeyboardEvent} events la touche pour déplacer le joueur
@@ -104,36 +111,49 @@ function move(events) {
     let newY = 0;
     const oldX = currentPosPlayer.x;
     const oldY = currentPosPlayer.y;
+    const oldPos = getSquareAt({
+        x: oldX,
+        y: oldY,
+    });
     let nextToPlayerX = 0;
     let nextToPlayerY = 0;
+
     switch (events.key) {
     case "ArrowDown":
         newX = currentPosPlayer.x;
         newY = currentPosPlayer.y + 1;
         nextToPlayerX = currentPosPlayer.x;
         nextToPlayerY = currentPosPlayer.y + 2;
+        direction = "player-front";
         deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY);
+        events.preventDefault();
         break;
     case "ArrowUp":
         newX = currentPosPlayer.x;
         newY = currentPosPlayer.y - 1;
         nextToPlayerX = currentPosPlayer.x;
         nextToPlayerY = currentPosPlayer.y - 2;
+        direction = "player-up";
         deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY);
+        events.preventDefault();
         break;
     case "ArrowRight":
         newX = currentPosPlayer.x + 1;
         newY = currentPosPlayer.y;
         nextToPlayerX = currentPosPlayer.x + 2;
         nextToPlayerY = currentPosPlayer.y;
+        direction = "player-right";
         deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY);
+        events.preventDefault();
         break;
     case "ArrowLeft":
         newX = currentPosPlayer.x - 1;
         newY = currentPosPlayer.y;
         nextToPlayerX = currentPosPlayer.x - 2;
         nextToPlayerY = currentPosPlayer.y;
+        direction = "player-left";
         deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY);
+        events.preventDefault();
         break;
     }
 }
@@ -144,8 +164,8 @@ function move(events) {
  * @param {Number} oldY l'ancienne position (y)
  * @param {Number} newX la nouvelle position (x)
  * @param {Number} newY la nouvelle position (y)
- * @param {number} nextToPlayerX la position qui suit la nouvelle position (x)
- * @param {number} nextToPlayerY la position qui suit la nouvelle position (y)
+ * @param {Number} nextToPlayerX la position qui suit la nouvelle position (x)
+ * @param {Number} nextToPlayerY la position qui suit la nouvelle position (y)
  */
 function deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY) {
     const oldPos = getSquareAt({
@@ -163,38 +183,57 @@ function deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY) {
         y: nextToPlayerY,
     });
 
-    if (!$(newPos).hasClass("wall") && !allOnTarget()) {
-        if (!(($(newPos).hasClass("box") || $(newPos).hasClass("boxOnTarget")) && ($(nextToPlayer).hasClass("box") || $(nextToPlayer).hasClass("boxOnTarget") || $(nextToPlayer).hasClass("wall")))) {
-            $(oldPos).removeClass("player");
+    if (!allOnTarget()) {
+        $(oldPos).removeClass("player-front");
+        $(oldPos).removeClass("player-front2");
+        $(oldPos).removeClass("player-up");
+        $(oldPos).removeClass("player-up2");
+        $(oldPos).removeClass("player-left");
+        $(oldPos).removeClass("player-left2");
+        $(oldPos).removeClass("player-right");
+        $(oldPos).removeClass("player-right2");
 
-            if (!$(oldPos).hasClass("target")) {
-                $(oldPos).addClass("floor");
-            }
+        if (!$(newPos).hasClass("wall")) {
+            if (!(($(newPos).hasClass("box") || $(newPos).hasClass("boxOnTarget")) && ($(nextToPlayer).hasClass("box") || $(nextToPlayer).hasClass("boxOnTarget") || $(nextToPlayer).hasClass("wall")))) {
+                $(oldPos).removeClass("player");
 
-            $(newPos).addClass("player");
-            $(newPos).removeClass("floor");
-
-            if ($(newPos).hasClass("box") || $(newPos).hasClass("boxOnTarget")) {
-                $(newPos).removeClass("box");
-
-                if ($(newPos).hasClass("boxOnTarget")) {
-                    $(newPos).addClass("target");
+                if (!$(oldPos).hasClass("target")) {
+                    $(oldPos).addClass("floor");
                 }
 
-                $(newPos).removeClass("boxOnTarget");
+                $(newPos).addClass("player");
+                $(newPos).addClass(direction);
+                $(newPos).removeClass("floor");
 
-                if ($(nextToPlayer).hasClass("target")) {
-                    $(nextToPlayer).addClass("boxOnTarget");
-                } else {
-                    $(nextToPlayer).addClass("box");
+                if ($(newPos).hasClass("box") || $(newPos).hasClass("boxOnTarget")) {
+                    $(newPos).removeClass("box");
+
+                    if ($(newPos).hasClass("boxOnTarget")) {
+                        $(newPos).addClass("target");
+                    }
+
+                    $(newPos).removeClass("boxOnTarget");
+
+                    if ($(nextToPlayer).hasClass("target")) {
+                        $(nextToPlayer).addClass("boxOnTarget");
+                    } else {
+                        $(nextToPlayer).addClass("box");
+                    }
                 }
-            }
 
-            incrMoves();
+                incrMoves();
 
-            if (allOnTarget()) {
-                $("#msg").text("Bien joué ! Appuyez sur la touche ESPACE pour passer au niveau suivant !");
+                if (allOnTarget()) {
+                    // @ts-ignore
+                    clearInterval(playerAnimationTimer);
+                    $("#msg").text("Bien joué ! Appuyez sur la touche ESPACE pour passer au niveau suivant !");
+                    boxesAnimationTimer = setInterval(animateBoxes, 100);
+                }
+            } else {
+                $(oldPos).addClass(direction);
             }
+        } else {
+            $(oldPos).addClass(direction);
         }
     }
 }
@@ -213,7 +252,7 @@ function incrMoves() {
  * @returns true si toutes les boites sont sur leurs cibles, false sinon
  */
 function allOnTarget() {
-    return $(".boxOnTarget").length === $(".target").length;
+    return $(".boxOnTarget").length === $(".target").length || $(".box.target").length === $(".target").length;
 }
 
 /**
@@ -230,6 +269,7 @@ function finishLevel(events) {
                 endGame();
             }
         }
+        events.preventDefault();
         break;
     }
 }
@@ -246,6 +286,12 @@ function initLevel(level) {
     buildLevel(level);
 
     $("#msg").empty();
+
+    direction = "player-front";
+    playerAnimationTimer = setInterval(animatePlayer, 750);
+
+    // @ts-ignore
+    clearInterval(boxesAnimationTimer);
 }
 
 /**
@@ -256,4 +302,36 @@ function endGame() {
     $("#levelBlock").hide();
 
     $("#msg").text("Félicitations ! Vous avez réussi tous les niveaux !");
+}
+
+let playerAnimationState = 1;
+
+/**
+ * Anime le joueur
+ */
+function animatePlayer() {
+    if (playerAnimationState === 1) {
+        $(".player").removeClass(direction);
+        $(".player").addClass(`${direction}2`);
+    } else {
+        $(".player").removeClass(`${direction}2`);
+        $(".player").addClass(direction);
+    }
+    playerAnimationState = (playerAnimationState + 1) % 2;
+}
+
+let boxesAnimationState = 1;
+
+/**
+ * Anime les boites
+ */
+function animateBoxes() {
+    if (boxesAnimationState === 1) {
+        $(".boxOnTarget").addClass("box");
+        $(".boxOnTarget").removeClass("boxOnTarget");
+    } else {
+        $(".box").addClass("boxOnTarget");
+        $(".box").removeClass("box");
+    }
+    boxesAnimationState = (boxesAnimationState + 1) % 2;
 }
