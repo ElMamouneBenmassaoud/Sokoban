@@ -85,6 +85,7 @@ footer {
 #levelBlock {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-top: 16px;
     margin-bottom: 16px;
     color: red;
@@ -133,4 +134,13 @@ footer {
 
 #world {
     margin-bottom: 16px;
+}
+
+#restart {
+    background-image: url("../assets/restart.png");
+    background-size: cover;
+    width: 30px;
+    height: 30px;
+    margin-left: 16px;
+    cursor: pointer;
 }

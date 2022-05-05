@@ -15,6 +15,10 @@ window.addEventListener("load", function (event) {
         move(events);
         finishLevel(events);
     });
+    // @ts-ignore
+    document.getElementById("restart").addEventListener("click", function() {
+        initLevel(currentLevel);
+    });
 });
 
 /**
