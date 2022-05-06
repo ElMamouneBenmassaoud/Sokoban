@@ -7,6 +7,7 @@
     "parserOptions": {
         "ecmaVersion": 2020
     },
+    "plugins": ["classPrivateProperties","classPrivateMethods"],
     "rules": {
         /* recommended disabled */
         "no-undef": "off",

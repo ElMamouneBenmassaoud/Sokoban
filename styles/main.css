@@ -22,6 +22,7 @@ header {
     text-align: center;
     display: flex;
     background-image: linear-gradient(to right, blue, red);
+    color: white;
 }
 main {
     grid-area: main;

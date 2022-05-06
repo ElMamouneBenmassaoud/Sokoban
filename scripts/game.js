@@ -162,6 +162,8 @@ function move(events) {
     }
 }
 
+let states = null;
+
 /**
  * Deplacement de l'ancienne position a la nouvelle position.
  * @param {Number} oldX l'ancienne position (x)
@@ -209,6 +211,9 @@ function deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY) {
                 $(newPos).addClass(direction);
                 $(newPos).removeClass("floor");
 
+                let playerPosition = { x: oldX, y: oldY };
+                let boxPosition = undefined;
+
                 if ($(newPos).hasClass("box") || $(newPos).hasClass("boxOnTarget")) {
                     $(newPos).removeClass("box");
 
@@ -223,9 +228,14 @@ function deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY) {
                     } else {
                         $(nextToPlayer).addClass("box");
                     }
+
+                    boxPosition = { x: nextToPlayerX, y: nextToPlayerY };
                 }
 
                 incrMoves();
+
+                const state = new State(playerPosition, boxPosition);
+                states.push(state);
 
                 if (allOnTarget()) {
                     // @ts-ignore
@@ -283,6 +293,8 @@ function finishLevel(events) {
  * @param {Number} level le niveau à initialiser
  */
 function initLevel(level) {
+    states = [];
+
     moves = 0;
     $("#cpt").text(moves);
 
