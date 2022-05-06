@@ -1,24 +1,26 @@
 "use strict";
 
 class State {
+    #playerPosition;
+    #boxPosition;
 
     /**
-     * @param {{x:number,y:number}} playerPosition position du joueur
-     * @param {{x:number,y:number} | undefined} boxPosition position de la boite
+     * @param {{x:Number, y:Number}} playerPosition position du joueur avant déplacement
+     * @param {{x:Number, y:Number} | undefined} boxPosition position éventuelle de la boite après déplacement
      */
     constructor(playerPosition, boxPosition = undefined) {
         /** @private */
-        this._playerPosition = playerPosition;
+        this.#playerPosition = playerPosition;
         /** @private */
-        this._boxPosition = boxPosition;
+        this.#boxPosition = boxPosition;
     }
 
     /**
      * Renvoie la position du joueur.
      * @returns la position du joueur
      */
-    getPlayerPosition() {
-        return {...this._playerPosition};
+    get playerPosition() {
+        return { ...this.#playerPosition };
     }
 
     /**
@@ -26,16 +28,12 @@ class State {
      * @returns position de la box
      */
     get boxPosition() {
-        if (this.boxPosition === undefined) {
+        if (this.#boxPosition === undefined) {
             return undefined;
         } else {
-            return {...this._boxPosition};
+            return { ...this.#boxPosition };
         }
     }
 }
-const s = new State({x: 1, y: 2});
-const position = s.getPlayerPosition();
-position.x = 20;
-console.log(s.getPlayerPosition()); // réponse correcte { x: 1, y: 2 }
-position.y = 50;
-console.log(s.getPlayerPosition()); // réponse correcte { x: 1, y: 2 }
+
+
