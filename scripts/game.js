@@ -15,9 +15,67 @@ window.addEventListener("load", function (event) {
         move(events);
         finishLevel(events);
     });
+
     // @ts-ignore
-    document.getElementById("restart").addEventListener("click", function() {
+    document.getElementById("restart").addEventListener("click", function () {
         initLevel(currentLevel);
+    });
+
+    // @ts-ignore
+    document.getElementById("cancel").addEventListener("click", function () {
+        if (states.length > 0 && !allOnTarget()) {
+            const state = states.pop();
+
+            let playerPosition = getSquareAt(getPlayerPosition());
+            // @ts-ignore
+            let prevPlayerPosition = getSquareAt(state.playerPosition);
+
+            $(playerPosition).removeClass("player-front");
+            $(playerPosition).removeClass("player-front2");
+            $(playerPosition).removeClass("player-up");
+            $(playerPosition).removeClass("player-up2");
+            $(playerPosition).removeClass("player-left");
+            $(playerPosition).removeClass("player-left2");
+            $(playerPosition).removeClass("player-right");
+            $(playerPosition).removeClass("player-right2");
+
+            $(playerPosition).removeClass("player");
+
+            if (!$(playerPosition).hasClass("target")) {
+                $(playerPosition).addClass("floor");
+            }
+
+            // @ts-ignore
+            direction = state.direction;
+            $(prevPlayerPosition).addClass("player");
+            // @ts-ignore
+            $(prevPlayerPosition).addClass(state.direction);
+            $(prevPlayerPosition).removeClass("floor");
+
+            // @ts-ignore
+            if (state.boxPosition !== undefined) {
+                // @ts-ignore
+                let boxPosition = getSquareAt(state.boxPosition);
+
+                $(boxPosition).removeClass("box");
+
+                if ($(boxPosition).hasClass("boxOnTarget")) {
+                    $(boxPosition).addClass("target");
+                } else {
+                    $(boxPosition).addClass("floor");
+                }
+
+                $(boxPosition).removeClass("boxOnTarget");
+
+                if ($(playerPosition).hasClass("target")) {
+                    $(playerPosition).addClass("boxOnTarget");
+                } else {
+                    $(playerPosition).addClass("box");
+                }
+            }
+
+            decrMoves();
+        }
     });
 });
 
@@ -47,25 +105,25 @@ function buildLevel(level) {
 
             // Adds the correct class depending on the symbol
             switch (symbol) {
-            case " ":
-                $(squareDiv).addClass("floor");
-                break;
-            case "x":
-                $(squareDiv).addClass("target");
-                break;
-            case "🧍":
-                $(squareDiv).addClass("player");
-                $(squareDiv).addClass("player-front");
-                break;
-            case "#":
-                $(squareDiv).addClass("box");
-                break;
-            case "@":
-                $(squareDiv).addClass("boxOnTarget");
-                break;
-            default:
-                $(squareDiv).addClass("wall");
-                break;
+                case " ":
+                    $(squareDiv).addClass("floor");
+                    break;
+                case "x":
+                    $(squareDiv).addClass("target");
+                    break;
+                case "🧍":
+                    $(squareDiv).addClass("player");
+                    $(squareDiv).addClass("player-front");
+                    break;
+                case "#":
+                    $(squareDiv).addClass("box");
+                    break;
+                case "@":
+                    $(squareDiv).addClass("boxOnTarget");
+                    break;
+                default:
+                    $(squareDiv).addClass("wall");
+                    break;
             }
 
             //Appends the square div to the line div
@@ -104,6 +162,7 @@ function getSquareAt(position) {
 }
 
 let direction = "";
+let prevDirection = "";
 
 /**
  * Déplacement du joueur en utilisants les touches directionelles
@@ -123,46 +182,53 @@ function move(events) {
     let nextToPlayerY = 0;
 
     switch (events.key) {
-    case "ArrowDown":
-        newX = currentPosPlayer.x;
-        newY = currentPosPlayer.y + 1;
-        nextToPlayerX = currentPosPlayer.x;
-        nextToPlayerY = currentPosPlayer.y + 2;
-        direction = "player-front";
-        deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY);
-        events.preventDefault();
-        break;
-    case "ArrowUp":
-        newX = currentPosPlayer.x;
-        newY = currentPosPlayer.y - 1;
-        nextToPlayerX = currentPosPlayer.x;
-        nextToPlayerY = currentPosPlayer.y - 2;
-        direction = "player-up";
-        deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY);
-        events.preventDefault();
-        break;
-    case "ArrowRight":
-        newX = currentPosPlayer.x + 1;
-        newY = currentPosPlayer.y;
-        nextToPlayerX = currentPosPlayer.x + 2;
-        nextToPlayerY = currentPosPlayer.y;
-        direction = "player-right";
-        deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY);
-        events.preventDefault();
-        break;
-    case "ArrowLeft":
-        newX = currentPosPlayer.x - 1;
-        newY = currentPosPlayer.y;
-        nextToPlayerX = currentPosPlayer.x - 2;
-        nextToPlayerY = currentPosPlayer.y;
-        direction = "player-left";
-        deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY);
-        events.preventDefault();
-        break;
+        case "ArrowDown":
+            newX = currentPosPlayer.x;
+            newY = currentPosPlayer.y + 1;
+            nextToPlayerX = currentPosPlayer.x;
+            nextToPlayerY = currentPosPlayer.y + 2;
+            prevDirection = direction;
+            direction = "player-front";
+            deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY);
+            events.preventDefault();
+            break;
+        case "ArrowUp":
+            newX = currentPosPlayer.x;
+            newY = currentPosPlayer.y - 1;
+            nextToPlayerX = currentPosPlayer.x;
+            nextToPlayerY = currentPosPlayer.y - 2;
+            prevDirection = direction;
+            direction = "player-up";
+            deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY);
+            events.preventDefault();
+            break;
+        case "ArrowRight":
+            newX = currentPosPlayer.x + 1;
+            newY = currentPosPlayer.y;
+            nextToPlayerX = currentPosPlayer.x + 2;
+            nextToPlayerY = currentPosPlayer.y;
+            prevDirection = direction;
+            direction = "player-right";
+            deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY);
+            events.preventDefault();
+            break;
+        case "ArrowLeft":
+            newX = currentPosPlayer.x - 1;
+            newY = currentPosPlayer.y;
+            nextToPlayerX = currentPosPlayer.x - 2;
+            nextToPlayerY = currentPosPlayer.y;
+            prevDirection = direction;
+            direction = "player-left";
+            deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY);
+            events.preventDefault();
+            break;
     }
 }
 
-let states = null;
+/**
+ * @type {State[]}
+ */
+let states = [];
 
 /**
  * Deplacement de l'ancienne position a la nouvelle position.
@@ -234,7 +300,7 @@ function deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY) {
 
                 incrMoves();
 
-                const state = new State(playerPosition, boxPosition);
+                const state = new State(playerPosition, prevDirection, boxPosition);
                 states.push(state);
 
                 if (allOnTarget()) {
@@ -262,6 +328,13 @@ function incrMoves() {
 }
 
 /**
+ * Décrémente le nombre de mouvements et l'affiche sur la page web
+ */
+function decrMoves() {
+    $("#cpt").text(--moves);
+}
+
+/**
  * Renvoie true si toutes les boites sont sur leurs cibles, false sinon
  * @returns true si toutes les boites sont sur leurs cibles, false sinon
  */
@@ -275,16 +348,16 @@ function allOnTarget() {
  */
 function finishLevel(events) {
     switch (events.code) {
-    case "Space":
-        if (allOnTarget()) {
-            if (currentLevel !== levels.length - 1) {
-                initLevel(++currentLevel);
-            } else {
-                endGame();
+        case "Space":
+            if (allOnTarget()) {
+                if (currentLevel !== levels.length - 1) {
+                    initLevel(++currentLevel);
+                } else {
+                    endGame();
+                }
             }
-        }
-        events.preventDefault();
-        break;
+            events.preventDefault();
+            break;
     }
 }
 
@@ -303,6 +376,7 @@ function initLevel(level) {
 
     $("#msg").empty();
 
+    prevDirection = "";
     direction = "player-front";
     playerAnimationTimer = setInterval(animatePlayer, 750);
 

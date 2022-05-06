@@ -37,6 +37,7 @@ footer {
     text-align: center;
     margin-top: auto !important; 
     background-image: linear-gradient(to right, blue, red);
+    padding: 8px;
 }
 
 .line {
@@ -83,6 +84,9 @@ footer {
     display: flex;
     background-color: yellow;
     margin-bottom: 8px;
+    padding: 4px;
+    justify-content: center;
+    align-items: center;
 }
 
 #cpt {
@@ -168,4 +172,13 @@ footer {
 .help-img {
     width: 80px;
     height: 50px;
+}
+
+#cancel {
+    background-image: url("../assets/cancel.png");
+    background-size: cover;
+    width: 30px;
+    height: 30px;
+    margin-left: 16px;
+    cursor: pointer;
 }
