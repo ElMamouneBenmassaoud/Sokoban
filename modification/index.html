@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sokoban – Webg2</title>
+    <link rel="icon" type="image/x-icon" href="assets/box.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles/main.css">
+    <script src="scripts/jquery.min.js"></script>
+    <script src="scripts/levels.js"></script>
+    <script src="scripts/game.js"></script>
+    <script src="scripts/state.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <header>
+        <div>SOKOBAN</div>
+        <div id="help" data-toggle="modal" data-target="#helpModal"></div>
+    </header>
+    <main>
+        <div id="cptBlock">
+            <div>Compteur de mouvements :&nbsp;</div>
+            <div id="cpt"></div>
+            <div id="cancel"></div>
+        </div>
+        <div id="levelBlock">
+            <div>NIVEAU&nbsp;</div>
+            <div id="level"></div>
+            <div id="restart"></div>
+        </div>
+        <div id="msg"></div>
+        <div id="world"></div>
+    </main>
+    <footer>
+        <div>
+            <div>El Mamoune Benmassaoud</div>
+            <div>58112</div>
+            <div>Toutes les images utilisées dans ce jeu sont l'oeuvre de Jeng-Long Jiang</div>
+        </div>
+    </footer>
+
+    <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="helpLabel">Aide</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div><img class="help-img" src="assets/help-push.png" alt="help-push"> Help push</div>
+                    <div><img class="help-img" src="assets/help-pull.png" alt="help-pull">Help pull</div>
+                    <div><img class="help-img" src="assets/help-level.png" alt="help-level">Help level</div>
+                    <div><img class="help-img" src="assets/help-double.png" alt="help-double">Help double</div>
+                    <div><img class="help-img" src="assets/help-win.png" alt="help-win">Help win</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
