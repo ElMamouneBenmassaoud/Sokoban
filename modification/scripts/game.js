@@ -180,6 +180,8 @@ function move(events) {
     });
     let nextToPlayerX = 0;
     let nextToPlayerY = 0;
+    let behindToPlayerX = 0;
+    let behindToPlayerY = 0;
 
     switch (events.key) {
         case "ArrowDown":
@@ -222,6 +224,46 @@ function move(events) {
             deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY);
             events.preventDefault();
             break;
+        case "z":
+                newX = currentPosPlayer.x;
+                newY = currentPosPlayer.y - 1;
+                nextToPlayerX = currentPosPlayer.x;
+                nextToPlayerY = currentPosPlayer.y + 1;
+                prevDirection = direction;
+                direction = "player-up";
+                deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY);
+                events.preventDefault();
+                break;
+        case "q":
+            newX = currentPosPlayer.x - 1;
+            newY = currentPosPlayer.y;
+            nextToPlayerX = currentPosPlayer.x + 1;
+            nextToPlayerY = currentPosPlayer.y;
+            prevDirection = direction;
+            direction = "player-left";
+            deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY);
+            events.preventDefault();
+            break;
+        case "s":
+            newX = currentPosPlayer.x;
+            newY = currentPosPlayer.y + 1;
+            nextToPlayerX = currentPosPlayer.x;
+            nextToPlayerY = currentPosPlayer.y -1;
+            prevDirection = direction;
+            direction = "player-front";
+            deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY);
+            events.preventDefault();
+            break;
+        case "d":
+                newX = currentPosPlayer.x + 1;
+                newY = currentPosPlayer.y;
+                nextToPlayerX = currentPosPlayer.x - 1;
+                nextToPlayerY = currentPosPlayer.y;
+                prevDirection = direction;
+                direction = "player-right";
+                deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY);
+                events.preventDefault();
+                break;
     }
 }
 
@@ -255,6 +297,8 @@ function deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY) {
         y: nextToPlayerY,
     });
 
+
+
     if (!allOnTarget()) {
         $(oldPos).removeClass("player-front");
         $(oldPos).removeClass("player-front2");
@@ -282,7 +326,7 @@ function deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY) {
 
                 if ($(newPos).hasClass("box") || $(newPos).hasClass("boxOnTarget")) {
                     $(newPos).removeClass("box");
-
+                    
                     if ($(newPos).hasClass("boxOnTarget")) {
                         $(newPos).addClass("target");
                     }
@@ -297,7 +341,6 @@ function deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY) {
 
                     boxPosition = { x: nextToPlayerX, y: nextToPlayerY };
                 }
-
                 incrMoves();
 
                 const state = new State(playerPosition, prevDirection, boxPosition);
@@ -317,6 +360,8 @@ function deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY) {
         }
     }
 }
+
+function deplacementBack
 
 let moves = 0;
 
