@@ -361,7 +361,6 @@ function deplacement(oldX, oldY, newX, newY, nextToPlayerX, nextToPlayerY) {
     }
 }
 
-function deplacementBack
 
 let moves = 0;
 
