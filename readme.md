@@ -12,7 +12,6 @@ tags:
   - JavaScript
 
 ---
-> ###### <div style="display: flex; align-items: center;"> <img src="/assets/codeSource-icon.png" height="50" width="50"> <a href="https://github.com/ElMamouneBenmassaoud/Sokoban">GitHub</a> </div>
 
 ### Sokoban
 
