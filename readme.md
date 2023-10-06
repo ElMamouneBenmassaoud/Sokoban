@@ -1,6 +1,7 @@
 ---
 title: SOKOBAN
 publishDate: 2019-10-02 00:00:00
+![Sokoban](https://github.com/ElMamouneBenmassaoud/Sokoban/assets/101842968/836f6ff2-0f88-400d-bc0b-31fce49bd89f)
 
 description: |
   We developed brand positioning and design assets for the launch
@@ -9,7 +10,9 @@ tags:
   - HTML
   - CSS
   - JavaScript
+
 ---
+> ###### <div style="display: flex; align-items: center;"> <img src="/assets/codeSource-icon.png" height="50" width="50"> <a href="https://github.com/ElMamouneBenmassaoud/Sokoban">GitHub</a> </div>
 
 ### Sokoban
 
